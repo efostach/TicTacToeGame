@@ -1,61 +1,71 @@
 package com.company;
 
-public class GameLogic {
+class GameLogic {
 
-    private char winingCombiations[][] = {
-            {'X', '2', '3', 'X', '5', '6', 'X', '8', '9'},
-            {'X', '2', '3', '4', 'X', '6', '7', '8', 'X'},
-            {'X', 'X', 'X', '4', '5', '6', '7', '8', '9'},
-            {'1', '2', '3', 'X', 'X', 'X', '7', '8', '9'},
-            {'1', '2', '3', '4', '5', '6', 'X', 'X', 'X'},
-            {'1', '2', 'X', '4', 'X', '6', 'X', '8', '9'},
-            {'1', 'X', '3', '4', 'X', '6', '7', 'X', '9'},
-            {'1', '2', 'X', '4', '5', 'X', '7', '8', 'X'}
+    private static char[][] winingCombinations = {
+            {'*', ' ', ' ', '*', ' ', ' ', '*', ' ', ' '},
+            {'*', ' ', ' ', ' ', '*', ' ', ' ', ' ', '*'},
+            {'*', '*', '*', ' ', ' ', ' ', ' ', ' ', ' '},
+            {' ', ' ', ' ', '*', '*', '*', ' ', ' ', ' '},
+            {' ', ' ', ' ', ' ', ' ', ' ', '*', '*', '*'},
+            {' ', ' ', '*', ' ', '*', ' ', '*', ' ', ' '},
+            {' ', '*', ' ', ' ', '*', ' ', ' ', '*', ' '},
+            {' ', ' ', '*', ' ', ' ', '*', ' ', ' ', '*'}
 
     };
 
-    public static boolean checkInputParameter(char input){
-        System.out.println("You input is : " + input);
-        if(input != 'x'
-                && input != 'X'
-                && input != 'o'
-                && input != 'O') {
-            System.out.println("It's incorrect input value. Please, try again." + '\n');
-            return false;
+    private static void updateWiningCombinations(char figure) {
+        for (int j = 0; j < 8; j++) {
+            for (int i = 0; i < 8; i++) {
+                if (winingCombinations[j][i] != ' ')
+                    winingCombinations[j][i] = figure;
+            }
         }
-        System.out.println();
-        return true;
     }
 
-    public static boolean checkInputParameter(int input){
-        System.out.println("You input is : " + input);
-        if(input > 9 || input < 1) {
-            System.out.println("It's incorrect input value. Please, try again." + '\n');
+    static boolean isCellNumberCorrect(int index, Field field) {
+        if (index > 9 || index < 1) {
+            System.out.println("This index is incorrect. Please, try again." + '\n');
+            return false;
+        } else if (field.isCellFree(index)) {
+            field.updateField(index, field.userFigure);
             return true;
+        } else {
+            System.out.println("This index is busy. Please, try again." + '\n');
+            return false;
         }
-        System.out.println();
+    }
+
+    static boolean checkWiningCombinationsExistence(Field field, char figure) {
+
+        updateWiningCombinations(figure);
+
+        for (int j = 0; j < 8; j++) {
+            char[] currentFieldState = field.getField();
+            int coincidencesNumber = 0;
+
+            for (int i = 0; i < currentFieldState.length; i++) {
+
+                if (currentFieldState[i] == winingCombinations[j][i]
+                        && figure == winingCombinations[j][i])
+                    coincidencesNumber++;
+
+                if (coincidencesNumber == 3)
+                    return true;
+            }
+        }
         return false;
     }
 
-    public void checkWinigCombiationExistace() {
+    static void systemMove(Field field) {
+        int index = 1;
+
+        while (!field.isCellFree(index) && index < 10)
+            index++;
+        field.updateField(index, field.systemFigure);
     }
 
-    public void systemMove() {
+    static void userMove(int index, Field field) {
+        field.updateField(index, field.userFigure);
     }
-
-    public void userMove() {
-    }
-
-    public void setUserFigure(char value) {
-    }
-
-    public void getUserFigure() {
-    }
-
-    public void setSystemFigure(char value) {
-    }
-
-    public void getSystemFigure() {
-    }
-
 }
