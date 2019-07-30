@@ -1,71 +1,61 @@
 package com.company;
 
+import java.util.Scanner;
+
+import static com.company.util.*;
+import static com.company.util.player.SYSTEM;
+import static com.company.util.player.USER;
+
 class GameLogic {
 
-    private static char[][] winingCombinations = {
-            {'*', ' ', ' ', '*', ' ', ' ', '*', ' ', ' '},
-            {'*', ' ', ' ', ' ', '*', ' ', ' ', ' ', '*'},
-            {'*', '*', '*', ' ', ' ', ' ', ' ', ' ', ' '},
-            {' ', ' ', ' ', '*', '*', '*', ' ', ' ', ' '},
-            {' ', ' ', ' ', ' ', ' ', ' ', '*', '*', '*'},
-            {' ', ' ', '*', ' ', '*', ' ', '*', ' ', ' '},
-            {' ', '*', ' ', ' ', '*', ' ', ' ', '*', ' '},
-            {' ', ' ', '*', ' ', ' ', '*', ' ', ' ', '*'}
+    Field field = new Field();
+    Scanner scanner = new Scanner(System.in);
+    int inputCellNumber;
+    int moveNumber = 0;
 
-    };
+    void start() {
 
-    private static void updateWiningCombinations(char figure) {
-        for (int j = 0; j < 8; j++) {
-            for (int i = 0; i < 8; i++) {
-                if (winingCombinations[j][i] != ' ')
-                    winingCombinations[j][i] = figure;
+        System.out.println(HELLO_MSG + '\n');
+        field.printField();
+
+        while (moveNumber < 9) {
+            System.out.println(USER_MOVE_MSG);
+            inputCellNumber = scanner.nextInt();
+            while (!move(inputCellNumber, USER)) {
+                System.out.println(INCORRECT_CELL_NUMBER_MSG);
+                inputCellNumber = scanner.nextInt();
+            }
+            moveNumber++;
+            field.printField();
+
+            if (isWinnerExist(field.getField())) {
+                System.out.println(USER_WINNER_MSG);
+                break;
+            }
+            else if (moveNumber < 9){
+                System.out.println(SYSTEM_MOVE_MSG);
+                inputCellNumber = 0;
+                do {
+                    inputCellNumber++;
+                }
+                while (!move(inputCellNumber, SYSTEM));
+                moveNumber++;
+                field.printField();
+                if (isWinnerExist(field.getField())) {
+                    System.out.println(SYSTEM_WINNER_MSG);
+                    break;
+                }
             }
         }
+        if (!isWinnerExist(field.getField())) System.out.println(NO_WINNER_MSG);
     }
 
-    static boolean isCellNumberCorrect(int index, Field field) {
-        if (index > 9 || index < 1) {
-            System.out.println("This index is incorrect. Please, try again." + '\n');
+    boolean move(int cellNumber, player player) {
+        if (cellNumber > 9 || cellNumber < 1 || !field.isCellFree(cellNumber)) {
             return false;
-        } else if (field.isCellFree(index)) {
-            field.updateField(index, field.userFigure);
+        } else if (player.equals(USER))
+                field.updateField(cellNumber, 'X');
+            else field.updateField(cellNumber, 'O');
             return true;
-        } else {
-            System.out.println("This index is busy. Please, try again." + '\n');
-            return false;
         }
-    }
-
-    static boolean checkWiningCombinationsExistence(Field field, char figure) {
-
-        updateWiningCombinations(figure);
-
-        for (int j = 0; j < 8; j++) {
-            char[] currentFieldState = field.getField();
-            int coincidencesNumber = 0;
-
-            for (int i = 0; i < currentFieldState.length; i++) {
-
-                if (currentFieldState[i] == winingCombinations[j][i]
-                        && figure == winingCombinations[j][i])
-                    coincidencesNumber++;
-
-                if (coincidencesNumber == 3)
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    static void systemMove(Field field) {
-        int index = 1;
-
-        while (!field.isCellFree(index) && index < 10)
-            index++;
-        field.updateField(index, field.systemFigure);
-    }
-
-    static void userMove(int index, Field field) {
-        field.updateField(index, field.userFigure);
-    }
 }
