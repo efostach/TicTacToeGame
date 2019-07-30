@@ -28,7 +28,7 @@ class GameLogic {
             moveNumber++;
             field.printField();
 
-            if (isWinnerExist(field.getField())) {
+            if (field.isWinnerExist()) {
                 System.out.println(USER_WINNER_MSG);
                 break;
             }
@@ -41,13 +41,13 @@ class GameLogic {
                 while (!move(inputCellNumber, SYSTEM));
                 moveNumber++;
                 field.printField();
-                if (isWinnerExist(field.getField())) {
+                if (field.isWinnerExist()) {
                     System.out.println(SYSTEM_WINNER_MSG);
                     break;
                 }
             }
         }
-        if (!isWinnerExist(field.getField())) System.out.println(NO_WINNER_MSG);
+        if (!field.isWinnerExist()) System.out.println(NO_WINNER_MSG);
     }
 
     boolean move(int cellNumber, player player) {

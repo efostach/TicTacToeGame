@@ -1,11 +1,23 @@
 package com.company;
 
+import static com.company.util.*;
+
 class Field {
 
     private char[] field = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-    char[] getField() {
-        return this.field;
+    boolean isWinnerExist() {
+        for (int j = 0; j < 15; j++) {
+            int coincidencesNumber = 0;
+            for (int i = 0; i < this.field.length; i++) {
+                if (this.field[i] == winingCombinations[j][i]
+                        && ('X' == winingCombinations[j][i] || 'O' == winingCombinations[j][i]))
+                    coincidencesNumber++;
+                if (coincidencesNumber == 3)
+                    return true;
+            }
+        }
+        return false;
     }
 
     void updateField(int cellNumber, char value) {

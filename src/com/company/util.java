@@ -12,7 +12,7 @@ public class util {
 
     enum player {USER, SYSTEM}
 
-    private static char[][] winingCombinations = {
+    static char[][] winingCombinations = {
             {'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' '},
             {'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X'},
             {'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -32,21 +32,4 @@ public class util {
             {' ', ' ', 'O', ' ', ' ', 'O', ' ', ' ', 'O'}
 
     };
-
-    static boolean isWinnerExist(char[] currentFieldState) {
-        int j;
-
-        for (j = 0; j < 15; j++) {
-            int coincidencesNumber = 0;
-            for (int i = 0; i < currentFieldState.length; i++) {
-                if (currentFieldState[i] == winingCombinations[j][i]
-                        && ('X' == winingCombinations[j][i] || 'O' == winingCombinations[j][i]))
-                    coincidencesNumber++;
-                if (coincidencesNumber == 3)
-                    return true;
-            }
-        }
-        return false;
-    }
-
 }
