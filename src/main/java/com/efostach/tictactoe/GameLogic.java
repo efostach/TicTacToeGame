@@ -1,10 +1,6 @@
-package com.company;
+package main.java.com.efostach.tictactoe;
 
 import java.util.Scanner;
-
-import static com.company.util.*;
-import static com.company.util.player.SYSTEM;
-import static com.company.util.player.USER;
 
 class GameLogic {
 
@@ -15,45 +11,45 @@ class GameLogic {
 
     void start() {
 
-        System.out.println(HELLO_MSG + '\n');
+        System.out.println(GameUtil.HELLO_MSG + '\n');
         field.printField();
 
         while (moveNumber < 9) {
-            System.out.println(USER_MOVE_MSG);
+            System.out.println(GameUtil.USER_MOVE_MSG);
             inputCellNumber = scanner.nextInt();
-            while (!move(inputCellNumber, USER)) {
-                System.out.println(INCORRECT_CELL_NUMBER_MSG);
+            while (!move(inputCellNumber, GameUtil.player.USER)) {
+                System.out.println(GameUtil.INCORRECT_CELL_NUMBER_MSG);
                 inputCellNumber = scanner.nextInt();
             }
             moveNumber++;
             field.printField();
 
             if (field.isWinnerExist()) {
-                System.out.println(USER_WINNER_MSG);
+                System.out.println(GameUtil.USER_WINNER_MSG);
                 break;
             }
             else if (moveNumber < 9){
-                System.out.println(SYSTEM_MOVE_MSG);
+                System.out.println(GameUtil.SYSTEM_MOVE_MSG);
                 inputCellNumber = 0;
                 do {
                     inputCellNumber++;
                 }
-                while (!move(inputCellNumber, SYSTEM));
+                while (!move(inputCellNumber, GameUtil.player.SYSTEM));
                 moveNumber++;
                 field.printField();
                 if (field.isWinnerExist()) {
-                    System.out.println(SYSTEM_WINNER_MSG);
+                    System.out.println(GameUtil.SYSTEM_WINNER_MSG);
                     break;
                 }
             }
         }
-        if (!field.isWinnerExist()) System.out.println(NO_WINNER_MSG);
+        if (!field.isWinnerExist()) System.out.println(GameUtil.NO_WINNER_MSG);
     }
 
-    boolean move(int cellNumber, player player) {
+    boolean move(int cellNumber, GameUtil.player player) {
         if (cellNumber > 9 || cellNumber < 1 || !field.isCellFree(cellNumber)) {
             return false;
-        } else if (player.equals(USER))
+        } else if (player.equals(GameUtil.player.USER))
                 field.updateField(cellNumber, 'X');
             else field.updateField(cellNumber, 'O');
             return true;

@@ -1,4 +1,4 @@
-package com.company;
+package main.java.com.efostach.tictactoe;
 
 public class GameRunner {
 

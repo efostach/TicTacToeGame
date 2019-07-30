@@ -1,6 +1,6 @@
-package com.company;
+package main.java.com.efostach.tictactoe;
 
-public class util {
+public class GameUtil {
 
     static final String HELLO_MSG = "Hello! Let's start TicTacToe game!";
     static final String INCORRECT_CELL_NUMBER_MSG = "This cell number is incorrect. Please, try again.";

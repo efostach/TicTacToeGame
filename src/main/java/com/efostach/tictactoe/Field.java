@@ -1,6 +1,4 @@
-package com.company;
-
-import static com.company.util.*;
+package main.java.com.efostach.tictactoe;
 
 class Field {
 
@@ -10,8 +8,8 @@ class Field {
         for (int j = 0; j < 15; j++) {
             int coincidencesNumber = 0;
             for (int i = 0; i < this.field.length; i++) {
-                if (this.field[i] == winingCombinations[j][i]
-                        && ('X' == winingCombinations[j][i] || 'O' == winingCombinations[j][i]))
+                if (this.field[i] == GameUtil.winingCombinations[j][i]
+                        && ('X' == GameUtil.winingCombinations[j][i] || 'O' == GameUtil.winingCombinations[j][i]))
                     coincidencesNumber++;
                 if (coincidencesNumber == 3)
                     return true;
